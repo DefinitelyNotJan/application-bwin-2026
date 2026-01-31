@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Jan Lönnqvist / Social Creative Designer / bwin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000000;
+            --dark: #0a0a0a;
+            --surface: #111111;
+            --yellow: #FFCA05;
+            --yellow-dim: rgba(255, 202, 5, 0.1);
+            --white: #ffffff;
+            --grey: rgba(255,255,255,0.5);
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ── TICKER BARS (top + bottom fixed) ── */
+        .ticker {
+            position: fixed;
+            left: 0; right: 0;
+            height: 32px;
+            background: var(--yellow);
+            z-index: 200;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .ticker.top { top: 0; }
+        .ticker.bottom { bottom: 0; }
+        .ticker-track {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: tickerScroll 15s linear infinite;
+        }
+        .ticker.bottom .ticker-track {
+            animation-direction: reverse;
+        }
+        .ticker-track span {
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--black);
+            padding: 0 32px;
+        }
+        @keyframes tickerScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* ── CONTENT PUSH ── */
+        .page { padding-top: 32px; padding-bottom: 32px; }
+
+        /* ── HERO ── */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Diagonal speed lines */
+        .speed-line {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--yellow), transparent);
+            opacity: 0.08;
+            transform-origin: top center;
+            pointer-events: none;
+            animation: speedDash 1.5s linear infinite;
+        }
+        @keyframes speedDash {
+            from { transform: translateY(-100vh); }
+            to { transform: translateY(100vh); }
+        }
+
+        /* Giant angled sport words in bg */
+        .hero-bg-word {
+            position: absolute;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        .hero-tag {
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: slamIn 0.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .hero-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(52px, 12vw, 150px);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 0.9;
+            letter-spacing: -2px;
+            font-style: italic;
+        }
+        .hero-title .line {
+            display: block;
+            opacity: 0;
+            transform: translateX(-80px) skewX(-8deg);
+            animation: slamIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .hero-title .line:nth-child(1) { animation-delay: 0.3s; }
+        .hero-title .line:nth-child(2) { animation-delay: 0.45s; }
+        .hero-title .line:nth-child(3) { animation-delay: 0.6s; }
+        .hero-title .yellow { color: var(--yellow); }
+
+        @keyframes slamIn {
+            to { opacity: 1; transform: translateX(0) skewX(0deg); }
+        }
+
+        .hero-sub {
+            font-size: 14px;
+            color: var(--grey);
+            margin-top: 28px;
+            font-weight: 400;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0;
+            animation: slamIn 0.5s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 52px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        .hero-scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border-right: 2px solid var(--yellow);
+            border-bottom: 2px solid var(--yellow);
+            transform: rotate(45deg);
+            animation: bounceArrow 1.5s ease-in-out infinite;
+        }
+        @keyframes bounceArrow {
+            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; }
+            50% { transform: rotate(45deg) translateY(8px); opacity: 0.4; }
+        }
+
+        /* ── DIAGONAL SPLIT SECTION ── */
+        .diagonal-split {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+        .diag-left {
+            background: var(--yellow);
+            color: var(--black);
+            padding: 120px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+        }
+        .diag-left .section-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 24px;
+        }
+        .diag-left h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .diag-left p {
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 440px;
+            opacity: 0.75;
+        }
+
+        .diag-right {
+            background: var(--black);
+            padding: 120px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 32px;
+        }
+        .sport-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,202,5,0.1);
+        }
+        .sport-stat:last-child { border-bottom: none; }
+        .sport-stat .icon {
+            font-family: 'Oswald', sans-serif;
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--yellow);
+            font-style: italic;
+            min-width: 50px;
+        }
+        .sport-stat .info h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .sport-stat .info p {
+            font-size: 12px;
+            color: var(--grey);
+            line-height: 1.5;
+        }
+
+        /* ── SPEED MARQUEES ── */
+        .speed-marquee {
+            padding: 20px 0;
+            overflow: hidden;
+            background: var(--dark);
+            border-top: 1px solid rgba(255,202,5,0.06);
+            border-bottom: 1px solid rgba(255,202,5,0.06);
+        }
+        .speed-marquee-track {
+            display: inline-flex;
+            white-space: nowrap;
+        }
+        .speed-marquee-track.fast {
+            animation: tickerScroll 10s linear infinite;
+        }
+        .speed-marquee-track.medium {
+            animation: tickerScroll 18s linear infinite reverse;
+        }
+
+        /* ── SCROLL-DRIVEN PARALLAX HEADINGS ── */
+        .parallax-skew {
+            transition: transform 0.1s linear;
+        }
+
+        /* ── FLOATING SPORT SHAPES ── */
+        .sport-shape {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sport-shape.circle {
+            border-radius: 50%;
+            border: 2px solid rgba(255,202,5,0.06);
+        }
+        .sport-shape.diamond {
+            border: 2px solid rgba(255,202,5,0.04);
+            transform: rotate(45deg);
+        }
+        .sport-shape.line {
+            height: 2px;
+            background: rgba(255,202,5,0.04);
+        }
+        .speed-marquee-track span {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(36px, 6vw, 80px);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-style: italic;
+            padding: 0 24px;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,202,5,0.12);
+        }
+        .speed-marquee-track span.filled {
+            color: var(--yellow);
+            -webkit-text-stroke: none;
+            opacity: 0.08;
+        }
+
+        /* ── WHY BWIN (stacked cards) ── */
+        .why-section {
+            padding: 140px 60px;
+            background: var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+        .why-section .section-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 48px;
+        }
+        .why-section h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 60px;
+            font-style: italic;
+            max-width: 600px;
+        }
+        .why-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
+        .why-card {
+            background: var(--surface);
+            padding: 40px 28px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        .why-card:hover { background: rgba(255,202,5,0.05); }
+        .why-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--yellow);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .why-card:hover::after { transform: scaleX(1); }
+        .why-card .num {
+            font-family: 'Oswald', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: rgba(255,202,5,0.1);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .why-card h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .why-card p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--grey);
+        }
+
+        /* ── SKILLS (horizontal scroll ticker style) ── */
+        .skills-section {
+            background: var(--yellow);
+            color: var(--black);
+            padding: 80px 60px;
+        }
+        .skills-section .section-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0.4;
+            margin-bottom: 32px;
+        }
+        .skills-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill-tag {
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 20px;
+            border: 2px solid var(--black);
+            transition: background 0.3s, color 0.3s;
+            cursor: default;
+        }
+        .skill-tag:hover {
+            background: var(--black);
+            color: var(--yellow);
+        }
+
+        /* ── DHL CASE ── */
+        .case-section {
+            padding: 140px 60px;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .case-section .section-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 20px;
+        }
+        .case-section h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1;
+            font-style: italic;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+        .case-section > p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--grey);
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+        .case-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .case-card {
+            background: var(--surface);
+            padding: 36px 28px;
+        }
+        .case-card h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--yellow);
+        }
+        .case-card p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--grey);
+        }
+
+        /* ── EXPERIENCE (scoreboard style) ── */
+        .exp-section {
+            padding: 140px 60px;
+            background: var(--black);
+        }
+        .exp-section .section-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 48px;
+        }
+        .exp-board {
+            max-width: 900px;
+        }
+        .exp-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 32px;
+            padding: 28px 0;
+            border-bottom: 1px solid rgba(255,202,5,0.06);
+            align-items: start;
+        }
+        .exp-row:last-child { border-bottom: none; }
+        .exp-year {
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--yellow);
+            letter-spacing: 1px;
+        }
+        .exp-role {
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .exp-company {
+            font-size: 12px;
+            color: var(--grey);
+            margin-bottom: 8px;
+        }
+        .exp-desc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--grey);
+        }
+
+        /* ── INFO BAR ── */
+        .info-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: var(--surface);
+            border-top: 2px solid var(--yellow);
+        }
+        .info-item {
+            padding: 40px;
+            text-align: center;
+            border-right: 1px solid rgba(255,202,5,0.06);
+        }
+        .info-item:last-child { border-right: none; }
+        .info-item h4 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            opacity: 0.5;
+            margin-bottom: 8px;
+        }
+        .info-item p {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .info-item .sub {
+            font-size: 11px;
+            color: var(--grey);
+            margin-top: 4px;
+        }
+
+        /* ── CTA ── */
+        .cta {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(48px, 10vw, 130px);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-style: italic;
+            line-height: 0.9;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .cta h2 .yellow { color: var(--yellow); }
+        .cta p {
+            font-size: 14px;
+            color: var(--grey);
+            margin-bottom: 36px;
+            position: relative;
+        }
+        .cta-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 18px 52px;
+            background: var(--yellow);
+            color: var(--black);
+            text-decoration: none;
+            position: relative;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+        .cta-btn:hover { transform: scale(1.05); }
+
+        footer {
+            background: var(--black);
+            border-top: 1px solid rgba(255,202,5,0.06);
+            padding: 24px 60px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: rgba(255,255,255,0.2);
+        }
+
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-skew {
+            opacity: 0;
+            transform: translateX(-40px) skewX(-4deg);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-skew.visible {
+            opacity: 1;
+            transform: translateX(0) skewX(0deg);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .ticker { height: 26px; }
+            .ticker-track span { font-size: 10px; letter-spacing: 2px; padding: 0 20px; }
+            .page { padding-top: 26px; padding-bottom: 26px; }
+            .diagonal-split { grid-template-columns: 1fr; }
+            .diag-left { clip-path: none; padding: 80px 24px; }
+            .diag-right { padding: 60px 24px; }
+            .why-section { padding: 80px 24px; }
+            .why-cards { grid-template-columns: 1fr 1fr; }
+            .skills-section { padding: 60px 24px; }
+            .case-section { padding: 80px 24px; }
+            .case-cards { grid-template-columns: 1fr; }
+            .exp-section { padding: 80px 24px; }
+            .exp-row { grid-template-columns: 1fr; gap: 4px; }
+            .info-bar { grid-template-columns: 1fr; }
+            .info-item { border-right: none; border-bottom: 1px solid rgba(255,202,5,0.06); }
+            .cta { height: auto; padding: 100px 24px; }
+            footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── TICKERS ── -->
+<div class="ticker top">
+    <div class="ticker-track">
+        <span>Powerlifting</span><span>Boxing</span><span>BJJ</span><span>Basketball</span><span>Judo</span><span>Social Creative</span><span>Motion Design</span><span>bwin</span>
+        <span>Powerlifting</span><span>Boxing</span><span>BJJ</span><span>Basketball</span><span>Judo</span><span>Social Creative</span><span>Motion Design</span><span>bwin</span>
+    </div>
+</div>
+<div class="ticker bottom">
+    <div class="ticker-track">
+        <span>Adobe CC</span><span>After Effects</span><span>Premiere</span><span>Figma</span><span>Midjourney</span><span>Fast Turnaround</span><span>Multi-Platform</span><span>Live Sport</span>
+        <span>Adobe CC</span><span>After Effects</span><span>Premiere</span><span>Figma</span><span>Midjourney</span><span>Fast Turnaround</span><span>Multi-Platform</span><span>Live Sport</span>
+    </div>
+</div>
+
+<div class="page">
+
+<!-- ── HERO ── -->
+<section class="hero" id="heroSection">
+    <div class="hero-content">
+        <div class="hero-tag">Application / bwin / Entain</div>
+        <h1 class="hero-title">
+            <span class="line">Social</span>
+            <span class="line"><span class="yellow">Creative</span></span>
+            <span class="line">Designer</span>
+        </h1>
+        <p class="hero-sub">8+ years in design, motion, and multi-market campaigns. Athlete. Sports obsessive. Built for fast-paced creative production.</p>
+    </div>
+    <div class="hero-scroll"><div class="hero-scroll-arrow"></div></div>
+</section>
+
+<!-- ── SPEED MARQUEE 1 ── -->
+<div class="speed-marquee">
+    <div class="speed-marquee-track fast">
+        <span>Powerlifting</span><span class="filled">Boxing</span><span>BJJ</span><span class="filled">Basketball</span><span>Judo</span><span class="filled">Sport</span><span>Motion</span><span class="filled">Speed</span>
+        <span>Powerlifting</span><span class="filled">Boxing</span><span>BJJ</span><span class="filled">Basketball</span><span>Judo</span><span class="filled">Sport</span><span>Motion</span><span class="filled">Speed</span>
+    </div>
+</div>
+
+<!-- ── DIAGONAL SPLIT: ABOUT + SPORT ── -->
+<section class="diagonal-split">
+    <div class="diag-left">
+        <div class="section-label reveal-skew">About</div>
+        <h2 class="reveal-skew parallax-skew">Designer.<br>Athlete.<br>Sports Fan.</h2>
+        <p class="reveal-skew">I'm Jan, a designer from Finland based in the Netherlands. 8+ years across campaign design, motion graphics, DTP, and multi-market creative production for brands like DHL, Rituals, HelloFresh, IKEA, and GLS. I build high-volume social and digital assets on fast turnarounds, and I understand sports fan culture because I live it every day.</p>
+    </div>
+    <div class="diag-right">
+        <div class="sport-stat reveal">
+            <div class="icon">PL</div>
+            <div class="info">
+                <h4>Powerlifting</h4>
+                <p>Squat, bench, deadlift. Training 5x/week.</p>
+            </div>
+        </div>
+        <div class="sport-stat reveal">
+            <div class="icon">BX</div>
+            <div class="info">
+                <h4>Boxing</h4>
+                <p>Regular training. Striking, footwork, conditioning.</p>
+            </div>
+        </div>
+        <div class="sport-stat reveal">
+            <div class="icon">JJ</div>
+            <div class="info">
+                <h4>Brazilian Jiu-Jitsu</h4>
+                <p>Active no-gi training.</p>
+            </div>
+        </div>
+        <div class="sport-stat reveal">
+            <div class="icon">BB</div>
+            <div class="info">
+                <h4>Basketball</h4>
+                <p>Former semi-professional player. Still playing regularly.</p>
+            </div>
+        </div>
+        <div class="sport-stat reveal">
+            <div class="icon">JD</div>
+            <div class="info">
+                <h4>Judo</h4>
+                <p>Former competitive judoka.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── SPEED MARQUEE 2 ── -->
+<div class="speed-marquee">
+    <div class="speed-marquee-track medium">
+        <span>Social Content</span><span class="filled">Instagram</span><span>TikTok</span><span class="filled">Reels</span><span>Motion Graphics</span><span class="filled">Video Edit</span><span>Campaign Design</span><span class="filled">Fast</span>
+        <span>Social Content</span><span class="filled">Instagram</span><span>TikTok</span><span class="filled">Reels</span><span>Motion Graphics</span><span class="filled">Video Edit</span><span>Campaign Design</span><span class="filled">Fast</span>
+    </div>
+</div>
+
+<!-- ── WHY BWIN ── -->
+<section class="why-section">
+    <div class="sport-shape circle" style="width:200px;height:200px;top:10%;right:5%;" data-parallax="-0.12"></div>
+    <div class="sport-shape diamond" style="width:80px;height:80px;top:60%;right:15%;" data-parallax="0.08"></div>
+    <div class="sport-shape circle" style="width:120px;height:120px;bottom:15%;left:3%;" data-parallax="0.1"></div>
+    <div class="section-label reveal-skew">Why bwin</div>
+    <h2 class="reveal-skew parallax-skew">Sport runs through<br>everything I do.</h2>
+    <div class="why-cards">
+        <div class="why-card reveal">
+            <div class="num">01</div>
+            <h4>I Am the Audience</h4>
+            <p>I don't just design for sports fans. I am one. Powerlifting, boxing, BJJ, basketball, judo. I know what content makes fans stop scrolling.</p>
+        </div>
+        <div class="why-card reveal">
+            <div class="num">02</div>
+            <h4>Fast-Paced Production</h4>
+            <p>Built for speed. At HelloFresh and DHL I delivered high-volume creative on tight turnarounds across multiple platforms and markets simultaneously.</p>
+        </div>
+        <div class="why-card reveal">
+            <div class="num">03</div>
+            <h4>Motion + Video</h4>
+            <p>Experience in After Effects, Premiere, and motion design. Created animated campaigns for GLS and HVO including out-of-home digital screen content.</p>
+        </div>
+        <div class="why-card reveal">
+            <div class="num">04</div>
+            <h4>AI-Enhanced Creative</h4>
+            <p>Actively using Midjourney and AI tools in production. Created a GLS social campaign with fully AI-generated models, cutting production time and costs.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section class="skills-section">
+    <div class="section-label reveal">Tools & Skills</div>
+    <div class="skills-row">
+        <span class="skill-tag">After Effects</span>
+        <span class="skill-tag">Premiere Pro</span>
+        <span class="skill-tag">Photoshop</span>
+        <span class="skill-tag">Illustrator</span>
+        <span class="skill-tag">InDesign</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Midjourney</span>
+        <span class="skill-tag">Motion Design</span>
+        <span class="skill-tag">Video Editing</span>
+        <span class="skill-tag">Social Content</span>
+        <span class="skill-tag">DTP</span>
+        <span class="skill-tag">Art Direction</span>
+        <span class="skill-tag">Multi-Platform</span>
+        <span class="skill-tag">Fast Turnaround</span>
+        <span class="skill-tag">Team Leading</span>
+    </div>
+</section>
+
+<!-- ── DHL CASE ── -->
+<section class="case-section">
+    <div class="sport-shape line" style="width:300px;top:20%;right:10%;" data-parallax="-0.06"></div>
+    <div class="sport-shape diamond" style="width:60px;height:60px;bottom:20%;left:8%;" data-parallax="0.09"></div>
+    <div class="section-label reveal-skew">Case / DHL</div>
+    <h2 class="reveal-skew parallax-skew">Data to Design<br>to Localisation</h2>
+    <p class="reveal">At agency level for DHL, I handled the full pipeline / from data-driven campaign design to personally localising assets across European markets on tight deadlines.</p>
+    <div class="case-cards">
+        <div class="case-card reveal">
+            <h4>Data-Driven Design</h4>
+            <p>Campaign visuals built from demographic personas and performance data. Every design decision backed by what drives results per market.</p>
+        </div>
+        <div class="case-card reveal">
+            <h4>Self-Led Localisation</h4>
+            <p>Personally adapted campaign assets for multiple European markets / layouts, copy, typography adjusted for each language and region.</p>
+        </div>
+        <div class="case-card reveal">
+            <h4>Hammam Campaign</h4>
+            <p>Designed the Hammam campaign at Rituals which achieved the highest sales in the product's history / bold creative with multi-channel delivery.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section class="exp-section">
+    <div class="section-label reveal-skew">Experience</div>
+    <div class="exp-board">
+        <div class="exp-row reveal">
+            <div class="exp-year">2024</div>
+            <div>
+                <div class="exp-role">Senior Graphic Designer (Agency)</div>
+                <div class="exp-company">DHL / Multi-Market Campaigns</div>
+                <div class="exp-desc">Data-driven campaign design with self-led localisation across European markets.</div>
+            </div>
+        </div>
+        <div class="exp-row reveal">
+            <div class="exp-year">2022 / 2024</div>
+            <div>
+                <div class="exp-role">Visual Specialist</div>
+                <div class="exp-company">Rituals Cosmetics / Amsterdam</div>
+                <div class="exp-desc">DTP, graphic design, seasonal campaigns across digital, packaging, and retail.</div>
+            </div>
+        </div>
+        <div class="exp-row reveal">
+            <div class="exp-year">2022</div>
+            <div>
+                <div class="exp-role">Creative / DTP</div>
+                <div class="exp-company">HelloFresh / Amsterdam</div>
+                <div class="exp-desc">DTP, graphic design, team leading, project management. High-volume production.</div>
+            </div>
+        </div>
+        <div class="exp-row reveal">
+            <div class="exp-year">2019 / 2020</div>
+            <div>
+                <div class="exp-role">Graphic Artist</div>
+                <div class="exp-company">IKEA Group</div>
+                <div class="exp-desc">DTP and graphic design for retail campaigns.</div>
+            </div>
+        </div>
+        <div class="exp-row reveal">
+            <div class="exp-year">2019</div>
+            <div>
+                <div class="exp-role">Art Director</div>
+                <div class="exp-company">Valve / Helsinki</div>
+                <div class="exp-desc">Art direction, DTP, graphic design.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── INFO BAR ── -->
+<div class="info-bar">
+    <div class="info-item reveal">
+        <h4>Location</h4>
+        <p>Amsterdam, NL</p>
+        <div class="sub">Open to Munich relocation</div>
+    </div>
+    <div class="info-item reveal">
+        <h4>Languages</h4>
+        <p>Fluent English, Native Finnish</p>
+        <div class="sub">International team experience</div>
+    </div>
+    <div class="info-item reveal">
+        <h4>Education</h4>
+        <p>Bachelor of Culture and Arts</p>
+        <div class="sub">Graphic Design / Helsinki</div>
+    </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+    <h2 class="reveal">Let's<br><span class="yellow">Play.</span></h2>
+    <p class="reveal">Ready to create content that moves as fast as the game.</p>
+    <a href="mailto:jan.lonnqvist@windowslive.com" class="cta-btn reveal">Get in Touch</a>
+</section>
+
+<footer>
+    <span>Jan Lönnqvist / 2026</span>
+    <span>jan.lonnqvist@windowslive.com</span>
+</footer>
+
+</div>
+
+<script>
+// ── Speed lines in hero
+const hero = document.getElementById('heroSection');
+for (let i = 0; i < 25; i++) {
+    const line = document.createElement('div');
+    line.className = 'speed-line';
+    line.style.left = Math.random() * 100 + '%';
+    line.style.height = (100 + Math.random() * 300) + 'px';
+    line.style.animationDelay = Math.random() * 2 + 's';
+    line.style.animationDuration = (0.8 + Math.random() * 1.2) + 's';
+    line.style.transform = `rotate(${-5 + Math.random() * 10}deg)`;
+    hero.appendChild(line);
+}
+
+// ── Giant bg words
+const bgWords = ['SPORT', 'POWER', 'SPEED', 'GAME', 'WIN'];
+bgWords.forEach((word, i) => {
+    const el = document.createElement('div');
+    el.className = 'hero-bg-word';
+    el.textContent = word;
+    el.dataset.parallax = ((Math.random() - 0.5) * 0.15).toFixed(3);
+    el.style.fontSize = (120 + Math.random() * 200) + 'px';
+    el.style.top = (10 + i * 18) + '%';
+    el.style.left = (-5 + Math.random() * 80) + '%';
+    el.style.transform = `rotate(${-8 + Math.random() * 16}deg)`;
+    hero.appendChild(el);
+});
+
+// ── Smooth scroll tracking
+let smoothSy = 0;
+let targetSy = 0;
+let scrollVelocity = 0;
+let prevSy = 0;
+
+window.addEventListener('scroll', () => { targetSy = window.scrollY; });
+
+// ── Parallax shapes
+const parallaxEls = document.querySelectorAll('[data-parallax]');
+
+// ── Parallax-skew headings (react to scroll speed)
+const skewEls = document.querySelectorAll('.parallax-skew');
+
+// ── Speed marquee tracks (accelerate with scroll)
+const marqueeTrackFast = document.querySelector('.speed-marquee-track.fast');
+const marqueeTrackMedium = document.querySelector('.speed-marquee-track.medium');
+let marqueeOffsetFast = 0;
+let marqueeOffsetMedium = 0;
+
+// ── Why cards (stagger tilt on scroll)
+const whyCards = document.querySelectorAll('.why-card');
+
+// ── Sport stats (slide in from side on scroll)
+const sportStats = document.querySelectorAll('.sport-stat');
+
+// ── Skill tags
+const skillTags = document.querySelectorAll('.skill-tag');
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Smooth scroll
+    smoothSy += (targetSy - smoothSy) * 0.1;
+    scrollVelocity = smoothSy - prevSy;
+    prevSy = smoothSy;
+
+    // Parallax shapes
+    parallaxEls.forEach(el => {
+        const speed = parseFloat(el.dataset.parallax);
+        const rect = el.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        const offset = (center - window.innerHeight / 2) * speed;
+        // Preserve rotation if it's a diamond
+        if (el.classList.contains('diamond')) {
+            el.style.transform = `rotate(45deg) translateY(${offset}px)`;
+        } else {
+            el.style.transform = `translateY(${offset}px)`;
+        }
+    });
+
+    // Skew headings based on scroll velocity
+    const skew = Math.max(-6, Math.min(6, scrollVelocity * 0.3));
+    const scaleX = 1 + Math.abs(scrollVelocity) * 0.001;
+    skewEls.forEach(el => {
+        el.style.transform = `skewX(${skew}deg) scaleX(${Math.min(1.03, scaleX)})`;
+    });
+
+    // Speed marquees react to scroll velocity
+    marqueeOffsetFast -= 1.5 + Math.abs(scrollVelocity) * 0.8;
+    marqueeOffsetMedium += 1 + Math.abs(scrollVelocity) * 0.5;
+
+    if (marqueeTrackFast) {
+        marqueeTrackFast.style.transform = `translateX(${marqueeOffsetFast % (marqueeTrackFast.scrollWidth / 2)}px)`;
+        marqueeTrackFast.style.animation = 'none';
+    }
+    if (marqueeTrackMedium) {
+        marqueeTrackMedium.style.transform = `translateX(${marqueeOffsetMedium % (marqueeTrackMedium.scrollWidth / 2)}px)`;
+        marqueeTrackMedium.style.animation = 'none';
+    }
+
+    // Why cards: subtle tilt based on scroll position
+    whyCards.forEach((card, i) => {
+        const rect = card.getBoundingClientRect();
+        const progress = (rect.top - window.innerHeight) / -window.innerHeight;
+        if (progress > 0 && progress < 2) {
+            const tiltY = Math.sin(progress * 3 + i) * 2;
+            const lift = Math.max(0, 1 - Math.abs(progress - 0.8)) * -4;
+            card.style.transform = `perspective(600px) rotateY(${tiltY}deg) translateY(${lift}px)`;
+        }
+    });
+
+    // Hero bg words parallax
+    document.querySelectorAll('.hero-bg-word').forEach(el => {
+        const speed = parseFloat(el.dataset.parallax) || 0;
+        const baseRotate = el._baseRotate;
+        el.style.transform = `rotate(${baseRotate || 0}deg) translateY(${smoothSy * speed}px)`;
+    });
+}
+
+// Store base rotation for hero bg words
+document.querySelectorAll('.hero-bg-word').forEach(el => {
+    const m = el.style.transform.match(/rotate\(([^)]+)deg\)/);
+    el._baseRotate = m ? parseFloat(m[1]) : 0;
+});
+
+animate();
+
+// ── Reveal with stagger
+const revealEls = document.querySelectorAll('.reveal, .reveal-skew');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 40);
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// ── Skill tags stagger reveal
+const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            const tags = entry.target.querySelectorAll('.skill-tag');
+            tags.forEach((tag, i) => {
+                tag.style.opacity = '0';
+                tag.style.transform = 'translateY(16px) scale(0.9)';
+                tag.style.transition = `opacity 0.4s ${i * 0.04}s, transform 0.4s ${i * 0.04}s cubic-bezier(0.16, 1, 0.3, 1)`;
+                setTimeout(() => {
+                    tag.style.opacity = '1';
+                    tag.style.transform = 'translateY(0) scale(1)';
+                }, 10);
+            });
+            skillObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.2 });
+document.querySelectorAll('.skills-row').forEach(row => skillObserver.observe(row));
+</script>
+
+</body>
+</html>
